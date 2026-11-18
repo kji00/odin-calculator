@@ -4,12 +4,9 @@
   box-sizing: border-box;
 }
 
-* {
-    outline: 2px solid red;
-}
-
 button {
     padding: 1rem;
+    border-radius: 10%;
     flex: 1 1 calc(25% - 10px);
 }
 
@@ -19,6 +16,12 @@ button {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+}
+
+#displayBox {
+    width: 33%;
+    height: 3rem;
+    margin-bottom: 5px;
 }
 
 #keypad {
