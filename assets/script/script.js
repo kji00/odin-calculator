@@ -1,50 +1,81 @@
-const add = '+';
-const minus = '-';
-const multiply = '*';
-const divide = '/';
+const calc = {
+  firstNumber: "",
+  operator: null,
+  secondNumber: "",
+  shouldResetDisplay: false,
+};
 const btn = document.querySelectorAll(".btn");
 
-function addition(num1, num2){
-    return num1 + num2;
-};
-
-function subtraction(num1, num2){
-    return num1 - num2;
-};
-
-function multiplication(num1, num2){
-    return num1 * num2;
-};
-
-function division(dividend, divisor){
-    return dividend / divisor;
-};
-
-function operate(num1, operator, num2){
-    const sign = operator;
-
-    switch (sign) {
-        case '+':
-            return addition(num1, num2);
-        case '-':
-            return subtraction(num1, num2);
-        case '*':
-            return multiplication(num1, num2);
-        case '/':
-            return division(num1, num2);
-    }
-};
-
-function getInput(){
-    btn.forEach(button => {
-        button.addEventListener("click", (e) => {
-            const selection = e.target.dataset;
-            console.log(selection);
-        })
-    })
+function addition(num1, num2) {
+  return num1 + num2;
 }
 
+function subtraction(num1, num2) {
+  return num1 - num2;
+}
 
-getInput();
+function multiplication(num1, num2) {
+  return num1 * num2;
+}
+
+function division(dividend, divisor) {
+  return dividend / divisor;
+}
+
+function operate(num1, operator, num2) {
+
+  switch (operator) {
+    case "+":
+      return addition(num1, num2);
+    case "-":
+      return subtraction(num1, num2);
+    case "*":
+      return multiplication(num1, num2);
+    case "/":
+      return division(num1, num2);
+  }
+}
+
+function handleNumber(digit) {
+  if (!calc.firstNumber){
+      calc.firstNumber = digit;
+      console.log(`In handleNumber firstNumber: ${calc.firstNumber}`);
+  }
+  else if (calc.firstNumber){
+    calc.secondNumber = digit;
+    console.log(`In handleNumber secondNumber: ${calc.secondNumber}`);
+  }
+}
+
+function handleOperator(op) {
+    if (!calc.operator){
+        calc.operator = op;
+    }
+  console.log(`In handleOperator function ${calc.operator}`);
+}
+
+function handleEquals() {
+    console.log(operate(Number(calc.firstNumber), calc.operator, Number(calc.secondNumber)))
+}
+
+function updateDisplay() {}
+
+function handleClick() {
+  btn.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const selection = e.target.dataset;
+      if (selection.number) {
+        handleNumber(selection.number);
+      } else if (selection.operator) {
+        handleOperator(selection.operator);
+      } else if (selection.action) {
+        updateDisplay();
+      } else if (selection.equals) {
+        handleEquals(selection.equals)
+      }
+    });
+  });
+}
+
+handleClick();
 // console.log(operate(5, '*', 3));
-
