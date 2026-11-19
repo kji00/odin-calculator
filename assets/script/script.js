@@ -39,11 +39,17 @@ function operate(num1, operator, num2) {
 function handleNumber(digit) {
   if (!calc.firstNumber){
       calc.firstNumber = digit;
+      if(calc.firstNumber.includes('.')){
+        return;
+      }
       console.log(`In handleNumber firstNumber: ${calc.firstNumber}`);
   }
-  else if (calc.firstNumber){
-    calc.secondNumber = digit;
-    console.log(`In handleNumber secondNumber: ${calc.secondNumber}`);
+  else if (calc.firstNumber && !calc.operator){
+    calc.firstNumber += digit;
+    console.log(`In handleNumber firstNumber with no operator: ${calc.firstNumber}`);
+  } else if (calc.firstNumber && calc.operator){
+    calc.secondNumber += digit;
+    console.log(`In handleNumber secondNumber with operator: ${calc.secondNumber}`);
   }
 }
 
@@ -78,4 +84,10 @@ function handleClick() {
 }
 
 handleClick();
-// console.log(operate(5, '*', 3));
+
+
+/* 
+
+
+
+*/
