@@ -1,10 +1,15 @@
-const calc = {
+const initialState = {
   firstNumber: "",
   operator: null,
   secondNumber: "",
+  displayEquation: "",
   shouldResetDisplay: false,
 };
+
+const calc = { ...initialState };
+
 const btn = document.querySelectorAll(".btn");
+const showDisplay = document.querySelector("#display-box");
 
 function addition(num1, num2) {
   return num1 + num2;
@@ -36,9 +41,14 @@ function operate(num1, operator, num2) {
 }
 
 function handleEquals() {
-  console.log(
-    operate(Number(calc.firstNumber), calc.operator, Number(calc.secondNumber)),
+  const answer = operate(
+    Number(calc.firstNumber),
+    calc.operator,
+    Number(calc.secondNumber),
   );
+  const rounded = Math.round((answer + Number.EPSILON) * 100) / 100;
+  showDisplay.textContent = `${rounded}`;
+  console.log(answer);
 }
 
 function handleDecimal(sign) {
@@ -55,14 +65,17 @@ function handleDecimal(sign) {
 function handleNumber(digit) {
   if (!calc.firstNumber) {
     calc.firstNumber = digit;
+    updateDisplay(digit);
     console.log(`In handleNumber firstNumber: ${calc.firstNumber}`);
   } else if (calc.firstNumber && !calc.operator) {
     calc.firstNumber += digit;
+    updateDisplay(digit);
     console.log(
       `In handleNumber firstNumber with no operator: ${calc.firstNumber}`,
     );
   } else if (calc.firstNumber && calc.operator) {
     calc.secondNumber += digit;
+    updateDisplay(digit);
     console.log(
       `In handleNumber secondNumber with operator: ${calc.secondNumber}`,
     );
@@ -72,11 +85,20 @@ function handleNumber(digit) {
 function handleOperator(op) {
   if (!calc.operator) {
     calc.operator = op;
+    updateDisplay(op);
   }
   console.log(`In handleOperator function ${calc.operator}`);
 }
 
-function updateDisplay() {}
+function updateDisplay(value) {
+  if (value === "clear") {
+    Object.assign(calc, initialState);
+    showDisplay.textContent = 0;
+  } else {
+    calc.displayEquation += value;
+    showDisplay.textContent = `${calc.displayEquation}`;
+  }
+}
 
 function handleClick() {
   btn.forEach((button) => {
@@ -91,6 +113,8 @@ function handleClick() {
       } else if (selection.decimal) {
         console.log(selection.decimal);
         handleDecimal(selection.decimal);
+      } else if (selection.action) {
+        updateDisplay(selection.action);
       }
     });
   });
