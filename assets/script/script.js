@@ -3,7 +3,6 @@ const initialState = {
   operator: null,
   secondNumber: "",
   displayEquation: "",
-  shouldResetDisplay: false,
 };
 
 const calc = { ...initialState };
@@ -24,7 +23,11 @@ function multiplication(num1, num2) {
 }
 
 function division(dividend, divisor) {
-  return dividend / divisor;
+  if (divisor === 0) {
+    return "N/A";
+  } else {
+    return dividend / divisor;
+  }
 }
 
 function operate(num1, operator, num2) {
@@ -41,13 +44,20 @@ function operate(num1, operator, num2) {
 }
 
 function handleEquals() {
+  if (!calc.firstNumber || !calc.secondNumber) {
+    return;
+  }
   const answer = operate(
     Number(calc.firstNumber),
     calc.operator,
     Number(calc.secondNumber),
   );
-  const rounded = Math.round((answer + Number.EPSILON) * 100) / 100;
-  showDisplay.textContent = `${rounded}`;
+  if (answer === "N/A") {
+    showDisplay.textContent = `Can't divide by 0`;
+  } else {
+    const rounded = Math.round((answer + Number.EPSILON) * 100) / 100;
+    showDisplay.textContent = `${rounded}`;
+  }
   console.log(answer);
 }
 
